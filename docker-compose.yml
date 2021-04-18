@@ -1,8 +1,5 @@
 version: '3'
 
-networks:
-  my-network:
-    driver: bridge
 services:
   nextcloud_1:
     build: "./nextcloud/"
