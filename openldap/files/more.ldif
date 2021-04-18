@@ -1,0 +1,9 @@
+dn: cn=Gabriel Castro,ou=Users,dc=openstack,dc=org
+objectclass: inetOrgPerson
+cn: Gabriel Castro
+sn: Castro
+uid: gabcas28
+userpassword: gabcas28
+mail: gabcas28@example.com
+description: hacker guy
+ou: Development Department

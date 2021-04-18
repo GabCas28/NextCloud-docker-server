@@ -1,0 +1,72 @@
+version: '3'
+
+networks:
+  my-network:
+    driver: bridge
+services:
+  nextcloud_1:
+    build: "./nextcloud/"
+    env_file:
+     - ./.env
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    command: bash -c "/app/docker-settings.sh && php-fpm"
+    depends_on:
+        - mariadb
+  nextcloud_2:
+    build: "./nextcloud/"
+    env_file:
+      - ./.env
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    command: bash -c "/app/docker-settings.sh && php-fpm"
+    depends_on:
+        - mariadb
+  nextcloud_3:
+    build: "./nextcloud/"
+    env_file:
+     - ./.env
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    command: bash -c "/app/docker-settings.sh && php-fpm"
+    depends_on:
+        - mariadb
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+        - 8080:80
+    depends_on:
+        - nextcloud_1
+        - nextcloud_2
+        - nextcloud_3
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        - nextcloud:/var/www/html
+  mariadb:
+    image: "mariadb:10.4.8-bionic"
+    env_file:
+        - ./.env
+    command: "--transaction-isolation=READ-COMMITTED --binlog-format=ROW"
+    restart: always
+    volumes:
+        - db:/var/lib/mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD
+        - MYSQL_PASSWORD
+        - MYSQL_DATABASE
+        - MYSQL_USER
+  openldap:
+    build: "./openldap/"
+    ports:
+      - '389:389'
+
+volumes:
+  nextcloud:
+  db:
+  openldap_data:
+    driver: local
+    
