@@ -19,14 +19,16 @@ else
 
     echo "setting up ldap…"
 
-    run_as "php /var/www/html/occ ldap:show-config s01"
+    string=$(run_as "php /var/www/html/occ ldap:show-config")
+    found=$(echo $string  | grep 's01' -c)
 
-    if [ $? -eq 0 ]; then
-        echo OK
+    if [ $found -gt 0 ]; then
+        echo "FOUND OK"
     else
-        echo FAIL
+        echo "CREATING NEW CONFIG"
         run_as "php /var/www/html/occ ldap:create-empty-config"
     fi
+    
     run_as "php /var/www/html/occ ldap:set-config s01 ldapHost \"${NEXTCLOUD_LDAP_HOST}\""
     run_as "php /var/www/html/occ ldap:set-config s01 ldapPort \"${NEXTCLOUD_LDAP_PORT}\""
     run_as "php /var/www/html/occ ldap:set-config s01 ldapBase \"${NEXTCLOUD_LDAP_BASE}\""
