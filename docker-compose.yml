@@ -35,7 +35,7 @@ services:
     image: nginx
     restart: always
     ports:
-        - 8080:80
+        - 31007:80
     depends_on:
         - nextcloud_1
         - nextcloud_2
@@ -58,8 +58,8 @@ services:
         - MYSQL_USER
   openldap:
     build: "./openldap/"
-    ports:
-      - '389:389'
+    expose:
+      - '389'
 
 volumes:
   nextcloud:
