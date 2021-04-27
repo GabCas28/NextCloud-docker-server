@@ -31,6 +31,8 @@ services:
     command: bash -c "/app/docker-settings.sh && php-fpm"
     depends_on:
         - mariadb
+    expose:
+      - '389'
   nginx:
     image: nginx
     restart: always
@@ -47,7 +49,7 @@ services:
     image: "mariadb:10.4.8-bionic"
     env_file:
         - ./.env
-    command: "--transaction-isolation=READ-COMMITTED --binlog-format=ROW"
+    command: "--transaction-isolation=READ-COMMITTED --log-bin --binlog-format=ROW"
     restart: always
     volumes:
         - db:/var/lib/mysql
@@ -56,6 +58,8 @@ services:
         - MYSQL_PASSWORD
         - MYSQL_DATABASE
         - MYSQL_USER
+    expose:
+      - '3306'
   openldap:
     build: "./openldap/"
     expose:
