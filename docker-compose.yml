@@ -1,13 +1,18 @@
 version: '3'
 
 services:
+  nextcloud_origin:
+    image: "nextcloud:latest"
+    volumes:
+      - carabam:/var/www/html
+    command: exit 1
   nextcloud_1:
     build: "./nextcloud/"
     env_file:
      - ./.env
     restart: always
     volumes:
-      - nextcloud:/var/www/html
+      - carabam:/var/www/html
     command: bash -c "/app/docker-settings.sh && php-fpm"
     depends_on:
         - mariadb
@@ -17,7 +22,7 @@ services:
       - ./.env
     restart: always
     volumes:
-      - nextcloud:/var/www/html
+      - carabam:/var/www/html
     command: bash -c "/app/docker-settings.sh && php-fpm"
     depends_on:
         - mariadb
@@ -29,7 +34,7 @@ services:
      - ./.env
     restart: always
     volumes:
-      - nextcloud:/var/www/html
+      - carabam:/var/www/html
     command: bash -c "/app/docker-settings.sh && php-fpm"
     depends_on:
         - mariadb
@@ -50,7 +55,7 @@ services:
         - mariadb      
     volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
-        - nextcloud:/var/www/html
+        - carabam:/var/www/html
   mariadb:
     image: "mariadb:10.4.8-bionic"
     env_file:
@@ -72,7 +77,7 @@ services:
       - '389'
 
 volumes:
-  nextcloud:
+  carabam:
   db:
   openldap_data:
     driver: local
