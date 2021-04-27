@@ -5,7 +5,6 @@ services:
     image: "nextcloud:latest"
     volumes:
       - carabam:/var/www/html
-    command: exit 1
   nextcloud_1:
     build: "./nextcloud/"
     env_file:
