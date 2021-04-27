@@ -10,17 +10,18 @@ run_as() {
 }
 
 echo "checking for Nextcloud configuration"
-if [ run_as "php /var/www/html/occ maintenance:install \
-                --database 'mysql' \
-                --database-host '${MYSQL_HOST}'  \
-                --database-name '${MYSQL_DATABASE}'  \
-                --database-user '${MYSQL_USER}' \
-                --database-pass '${MYSQL_PASSWORD}' \
-                --admin-user '${MYSQL_ROOT_USER}' \
-                --admin-pass '${MYSQL_ROOT_PASSWORD}'" ] || [ echo "Hello" ]; then
-                
+{
+    run_as "php /var/www/html/occ maintenance:install 
+                --database 'mysql' 
+                --database-host '${MYSQL_HOST}'  
+                --database-name '${MYSQL_DATABASE}'  
+                --database-user '${MYSQL_USER}' 
+                --database-pass '${MYSQL_PASSWORD}' 
+                --admin-user '${MYSQL_ROOT_USER}' 
+                --admin-pass '${MYSQL_ROOT_PASSWORD}'" 
+} || {
     echo "Nextcloud already Installed"
-fi
+}
 
 echo "checking for LDAP configuration"
 
