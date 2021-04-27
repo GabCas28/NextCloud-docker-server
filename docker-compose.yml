@@ -5,6 +5,7 @@ services:
     image: "nextcloud:latest"
     volumes:
       - carabam:/var/www/html
+    command: exit
   nextcloud_1:
     build: "./nextcloud/"
     env_file:
@@ -59,7 +60,7 @@ services:
     image: "mariadb:10.4.8-bionic"
     env_file:
         - ./.env
-    command: "--transaction-isolation=READ-COMMITTED --log-bin --binlog-format=ROW"
+    command: "--transaction-isolation=READ-COMMITTED --log-bin=mysqld-bin --binlog-format=ROW"
     restart: always
     volumes:
         - db:/var/lib/mysql
