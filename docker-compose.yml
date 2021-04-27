@@ -21,6 +21,8 @@ services:
     command: bash -c "/app/docker-settings.sh && php-fpm"
     depends_on:
         - mariadb
+    links:
+        - mariadb      
   nextcloud_3:
     build: "./nextcloud/"
     env_file:
@@ -33,6 +35,8 @@ services:
         - mariadb
     expose:
       - '389'
+    links:
+        - mariadb      
   nginx:
     image: nginx
     restart: always
@@ -42,6 +46,8 @@ services:
         - nextcloud_1
         - nextcloud_2
         - nextcloud_3
+    links:
+        - mariadb      
     volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
         - nextcloud:/var/www/html
